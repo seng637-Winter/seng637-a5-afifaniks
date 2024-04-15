@@ -3,6 +3,7 @@ import math
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 data = pd.read_csv("failure-data-a5/failure-dataset-a5.csv")["FC"].values
 
 def laplace_factor(k, n):
@@ -28,7 +29,7 @@ try:
   plt.xlabel('Interval')
   plt.ylabel('Laplace Factor (u(k))')
   plt.title('Laplace Test Analysis')
-  plt.axhline(y=0, color='red', linestyle='--')
+  plt.axhline(y=0, color='black', linestyle='dotted')
   plt.xticks(intervals)
   plt.grid(True)
 
