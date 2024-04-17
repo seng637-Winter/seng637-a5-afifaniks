@@ -193,6 +193,7 @@ It turns out, with this setup, the system immediately goes into the reject regio
 In this setup, we first attempt to find the MTTF<sub>min</sub> where the system is deemed to be acceptable. We find this by brute-force approach of changing the FIO until it becomes barely acceptable. The approach involves increasing or decreasing the number of failures on time intervals.  By this, we mean that the system may probably touch the reject line but will never enter the reject region. Our approach was time consuming to experiment with different values and observing the outcomes. However, it turned out to be quite fruitful as the minimum MTTF we found for our system effectively determines the minimum value to consider our system acceptable. The values evaluated are discussed in the following sections.
 
 **MTTF<sub>min</sub>:** We find the MTTF<sub>min</sub> when $FIO = 670 failurs/31 intervals = 21.613$ and $MTTF = 1/21.613 = 0.046$. Similar behaviour of the RDC chart was observed when the failure rates were between 670 - 675.
+
 ![RDC MTTFmin](media/rdc-min.png)
 
 ### 3.4 Finding 2 $\times$ MTTF<sub>min</sub> and 1/2 $\times$ MTTF<sub>min</sub>
