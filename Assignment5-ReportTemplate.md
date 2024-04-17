@@ -70,9 +70,18 @@ Figure A: Failure intensity plot using all data.
 Figure B: Failure intensity plot using subset of 21
 ![Intensity plot using subset of 21](media/best_intensity.png)
 
-The plots provide us an important insights about our original data amd the prediction of the models. We calculate the failure rate and mean time to failure (MTTF) for both the original data and the predications in the following table:
+The plots provide us an important insights about our original data amd the prediction of the models.
 
-Here's the provided data in markdown table format:
+We get the cumulative failure for both DW3 and GM from this table by summing the respective columns.
+![Predictions](media/model_predictions.png)
+
+On the 31st interval the cumulative failure for the predictios are:
+
+**DW3 = 91**
+
+**GM = 90**
+
+We calculate the failure rate and mean time to failure (MTTF) for both the original data and the predications in the following table:
 
 | Data         | Failure Rate (Failure/Interval) | MTTF (intervals) |
 |-----------------|---------------------------|------------------|
