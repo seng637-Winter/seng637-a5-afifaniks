@@ -18,7 +18,7 @@
 
 # Assessment Using Reliability Growth Testing 
 ### Model comparison 
-In this assignment, we used C-SFRAT tool for reliability growth testing. Our approach to use this tool is followed by a few steps:
+In this assignment, we used C-SFRAT, SFRAT tools along with Python for reliability growth testing. We also explored str.core on Docker to assess its capability. Our approach to use this tool is followed by a few steps:
 1. Run C-SFRAT.
 2. Load the provided failure data.
 3. Run estimation for all the available model and covariate combinations. C-SFRAT provides the following hazard functions or models.
@@ -34,6 +34,8 @@ In this assignment, we used C-SFRAT tool for reliability growth testing. Our app
 4. Compare the model results by different metrics like Akaike Information Criterion (AIC), Bayesian Information Criterion (BIC), etc.
 5. Choose the top 2 best performing models for further analysis.
 
+The initial outcome after running all the models and covariate combinations look like below:
+![all model](media/all_models.png)
 For comparison of the models, we simply sort by the different metric columns provided by the C-SFRAT tool. As defined in our comparison approach above, we choose the best models based on their AIC and BIC values. Both of these metrics are statistical measures used for model selection. 
 
 **AIC**: AIC is a measure of the relative quality of a statistical model for a given set of data. It takes into account both the goodness of fit of the model and the complexity of the model (number of parameters). The lower the AIC value, the better the model is considered to be. In this report, the best AIC score of 122.199 is attained by the Discrete Weibull (Type III) model with covariate (F) and followed by a score of 125.323 gained by the Geometric model with covariate (F).
@@ -47,15 +49,26 @@ We report the top 2 models and covariate combinations in the following table. Th
 | **DW3**        | F              | -57.09962860281749 | 122.19925720563498 | 127.93520602357556 | 528.0457018475142 | 16.021015042563807 | 1.0 | 1.0 |
 | **GM**         | F              | -59.66172245742845 | 125.3234449148569 | 129.62540652831234 | 759.6549462658442 | 87.9032532380169 | 0.9987877941564863 | 0.999286826565977 |
 
-### Range analysis on data
-We applied different subset of the test data on these models and it turns out using the subset of first 21 data out of all with the covariate F as 20 efforts per interval yields a very good performance compared to the other combination. One possible reason could be the sharp increase of the number of failures (increased by almost 10) on 20th interval followed by a similar large step in the 19th interval. This essentially means, if we leave out this points from our subset, the model is missing an important pattern while including these two intervals provide a better insights of the data to the models. The plots provided in the following section a better demonstration of this drastic change in the number of failures.
+### Trend analysis
+We applied laplace test analysis to find out the most effective subset for prediction. We utilized both SFRAT tool and wrote our own python [script](scripts/laplace.py) for the analysis. The result is in the following figure:
+![Laplace](media/laplace_test.png) After excluding the first failure, it is evident from the figure that reliability improves from 2nd to 18th interval and then again decreases from 19th to 23rd interval. Generally, a laplace factor ranging between -2 <= _u(k)_ <= 2 indicates stable reliability. Hence, we choose, a range of 0 to 21 to provide our models sufficient data points to get a better insight on the failure data. It turns out using the subset of first 21 data points out of all with the covariate F as 20 efforts per interval yields a very good performance compared to the other combination. One possible reason could be the sharp increase of the number of failures (increased by almost 10) on 20th interval followed by a similar large step in the 19th interval. This essentially means, if we leave out this points from our subset, the model is missing an important pattern while including these two intervals provide a better insights of the data to the models. The plots provided in the following section a better demonstration of this drastic change in the number of failures.
 
+### Running average of failures over time
+We also investigate the running average of failure of the SUT by using SFRAT. It is a calculation to analyze data points by creating a series of averages of different selections of the full data set. It helps to smooth out sudden fluctuations in time-series data and provides a better insights on the trend. Typically, if the trend is upwards then the errors or failures are rising and if it is downwards, number of failures is decreasing.
+![Average failure](media/average_trend.png)
 ### Plots for failure rate and reliability of the SUT for the test data
-The interval to failure plot of the two selected models is provided below:
+For a better comparison, we show both predictions using a subset of all data and predictions using only first 21 data. The interval to failure plot of the two selected models is provided below:
+Figure A: Interval to failure plot using all data.
 ![Interval to failure plot](media/model_comparison.png)
+Figure B: Interval to failure plot using subset of 21
+![Interval to failure plot using subset of 21](media/best_prediction.png)
 
-The intensity plot:
+Now we report the failure intensity predictions using all data and using the subset of first 21 data points.
+
+Figure A: Failure intensity plot using all data.
 ![Intensity plot](media/intensity_plot.png)
+Figure B: Failure intensity plot using subset of 21
+![Intensity plot using subset of 21](media/best_intensity.png)
 
 The plots provide us an important insights about our original data amd the prediction of the models. We calculate the failure rate and mean time to failure (MTTF) for both the original data and the predications in the following table:
 
@@ -79,8 +92,6 @@ If the business considers an acceptable failure rate to be 2 Failures/Interval, 
 
 **Example with an Acceptable Failure Rate of 3:**
 If the business sets an acceptable failure rate at 3 Failures/Interval, then the system would be acceptable at the 31st interval based on raw data (2.96 failures per interval). However, using the DW or GM model, we can estimate when the failure rate might exceed 3 in the future.
-
-Certainly, I'll integrate the provided advantages and disadvantages into the list:
 
 
 ### Discussion on the advantages and disadvantages of reliability growth analysis

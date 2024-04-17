@@ -3,7 +3,6 @@ import math
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
 data = pd.read_csv("failure-data-a5/failure-dataset-a5.csv")["FC"].values
 
 def laplace_factor(k, n):
@@ -25,7 +24,7 @@ try:
   intervals = range(2, len(data) + 1)
 
   plt.plot(intervals, u_k, color='blue')
-  plt.scatter(intervals, u_k, marker='*', color='red')
+  plt.scatter(intervals, u_k, marker='+', color='red')
   plt.xlabel('Interval')
   plt.ylabel('Laplace Factor (u(k))')
   plt.title('Laplace Test Analysis')
