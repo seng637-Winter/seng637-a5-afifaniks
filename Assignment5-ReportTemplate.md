@@ -121,8 +121,25 @@ If the business sets an acceptable failure rate at 3 Failures/Interval, then the
 3. **False Sense of Security:** Relying solely on reliability growth testing may give a false sense of security, as it cannot guarantee that all reliability issues have been addressed, and unforeseen failures may still occur in real-world usage.
 
 # Assessment Using Reliability Demonstration Chart 
+We utilized the RDC-11 spreadsheet to demonstrate Reliablity Demonstration Chart. However, the spreadsheet only accepts failures per interval. Hence, we modified the provided failure data uniformly in each interval to use it with the spreadsheet. Additionally, the spreadsheet only supports 16 data points. Hence, our demonstration only involves using the first 16 failures. 
 
-# 
+### Data conversion
+Let's assume we have $FC = 2$ on $T = 1$. Hence, we distribute intervals uniformly by converting it to:
+
+|Cumulative Failure Count|Time Between Failures|Cumulative Time|
+|---|---|---|
+|1|0.5|0.5|
+|2|0.5|1.0|
+
+The logic is implemented in this Python [script](scripts/RDC.py) and the new generated dataset can be found [here](failure-data-a5/failure-data-rdc.csv).
+
+To generate the RDC we used the default risk parameters:
+|Risk Parameter|Value|
+|---|---|
+|Discrimination Ratio ($\gamma$)| 2|
+|Developer's Risk ($\alpha$)|0.1|
+|User's Risk ($\beta$)|0.1|
+
 
 # Comparison of Results
 
