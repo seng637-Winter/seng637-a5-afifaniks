@@ -59,7 +59,12 @@ In this assignment, we used C-SFRAT, SFRAT tools along with Python for reliabili
 5. Choose the top 2 best performing models for further analysis.
 
 The initial outcome after running all the models and covariate combinations look like below:
+
 ![all model](media/all_models.png)
+
+Whereas, the table with different metrics for each model looks like below:
+
+![all model comparison](media/all_model_table.png)
 For comparison of the models, we simply sort by the different metric columns provided by the C-SFRAT tool. As defined in our comparison approach above, we choose the best models based on their AIC and BIC values. Both of these metrics are statistical measures used for model selection. 
 
 **AIC**: AIC is a measure of the relative quality of a statistical model for a given set of data. It takes into account both the goodness of fit of the model and the complexity of the model (number of parameters). The lower the AIC value, the better the model is considered to be. In this report, the best AIC score of 122.199 is attained by the Discrete Weibull (Type III) model with covariate (F) and followed by a score of 125.323 gained by the Geometric model with covariate (F).
@@ -81,20 +86,21 @@ We applied laplace test analysis to find out the most effective subset for predi
 We also investigate the running average of failure of the SUT by using SFRAT. It is a calculation to analyze data points by creating a series of averages of different selections of the full data set. It helps to smooth out sudden fluctuations in time-series data and provides a better insights on the trend. Typically, if the trend is upwards then the errors or failures are rising and if it is downwards, number of failures is decreasing.
 ![Average failure](media/average_trend.png)
 ### 2.4 Plots for failure rate and reliability of the SUT for the test data
-For a better comparison, we show both predictions using a subset of all data and predictions using only first 21 data. The interval to failure plot of the two selected models is provided below:
+For a better comparison, we show both predictions using a subset of all data and predictions using only first 21 data. Please note that for all cases, as indicated in the previous section, we used covariate F with a factor of 20. The interval to failure plot of the two selected models is provided below:
+
 Figure A: Interval to failure plot using all data.
 ![Interval to failure plot](media/model_comparison.png)
 Figure B: Interval to failure plot using subset of 21
 ![Interval to failure plot using subset of 21](media/best_prediction.png)
 
-Now we report the failure intensity predictions using all data and using the subset of first 21 data points.
+Now we report the failure intensity (failure rate) predictions using all data and using the subset of first 21 data points.
 
 Figure A: Failure intensity plot using all data.
 ![Intensity plot](media/intensity_plot.png)
 Figure B: Failure intensity plot using subset of 21
 ![Intensity plot using subset of 21](media/best_intensity.png)
 
-The plots provide us an important insights about our original data amd the prediction of the models.
+The plots provide us an important insights about our original data and the prediction of the models.
 
 We get the cumulative failure for both DW3 and GM from this table by summing the respective columns.
 ![Predictions](media/model_predictions.png)
@@ -126,6 +132,8 @@ If the business considers an acceptable failure rate to be 2 Failures/Interval, 
 **Example with an Acceptable Failure Rate of 3:**
 If the business sets an acceptable failure rate at 3 Failures/Interval, then the system would be acceptable at the 31st interval based on raw data (2.96 failures per interval). However, using the DW or GM model, we can estimate when the failure rate might exceed 3 in the future.
 
+We can also use the models discussed previously to analyze the trend in achieving a particular failure rate. For example, if we have a failure intensity target of 0.5, the GM (F) model predicts that we may require around additional 35 intervals whereas DW3 (F) model predicts it to be over 60 more intervals.
+![](media/intensity_target.png)
 
 ### 2.6 Advantages and disadvantages of reliability growth analysis
 **Advantages**
