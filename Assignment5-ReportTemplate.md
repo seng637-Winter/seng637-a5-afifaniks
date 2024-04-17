@@ -121,25 +121,57 @@ If the business sets an acceptable failure rate at 3 Failures/Interval, then the
 3. **False Sense of Security:** Relying solely on reliability growth testing may give a false sense of security, as it cannot guarantee that all reliability issues have been addressed, and unforeseen failures may still occur in real-world usage.
 
 # Assessment Using Reliability Demonstration Chart 
-We utilized the RDC-11 spreadsheet to demonstrate Reliablity Demonstration Chart. However, the spreadsheet only accepts failures per interval. Hence, we modified the provided failure data uniformly in each interval to use it with the spreadsheet. Additionally, the spreadsheet only supports 16 data points. Hence, our demonstration only involves using the first 16 failures. 
+We utilized the RDC-11 spreadsheet to demonstrate Reliablity Demonstration Chart. However, the spreadsheet only accepts failures per interval. Hence, we modified the provided failure data uniformly in each interval to use it with the spreadsheet. Additionally, the spreadsheet only supports 16 data points. Hence, we had to look for a modified version of the RDC spreadsheet that could accommodate all the 92 data points that we get after preparing our failure dataset. 
 
-### Data conversion
+### Dataset preparation
 Let's assume we have $FC = 2$ on $T = 1$. Hence, we distribute intervals uniformly by converting it to:
 
-|Cumulative Failure Count|Time Between Failures|Cumulative Time|
+|Cumulative Failure Count|Time Between Failure|Cumulative Time|
 |---|---|---|
 |1|0.5|0.5|
 |2|0.5|1.0|
 
 The logic is implemented in this Python [script](scripts/RDC.py) and the new generated dataset can be found [here](failure-data-a5/failure-data-rdc.csv).
 
-To generate the RDC we used the default risk parameters:
+In the following table, we show the first 5 and last 3 rows from the table to provide a better understanding of our generated data:
+| Cumulative Failure Count | Time Between Failure | Cumulative Time |
+|--------------------------|----------------------|-----------------|
+| 1                        | 0.5000               | 0.5000          |
+| 2                        | 0.5000               | 1.0000          |
+| 3                        | 0.0909               | 1.0909          |
+| 4                        | 0.0909               | 1.1818          |
+| 5                        | 0.0909               | 1.2727          |
+|...                       |...                   |...              |
+|90                        |0.3333                |26.3333          |
+91|0.3333|26.6667|
+92|0.3333|27.0000|
+
+### RDC plot generation
+
+To generate the RDC we use the default risk parameters:
 |Risk Parameter|Value|
 |---|---|
 |Discrimination Ratio ($\gamma$)| 2|
 |Developer's Risk ($\alpha$)|0.1|
 |User's Risk ($\beta$)|0.1|
 
+1. **Default MTTF:** We first plot the RDC graph using the calculated MTTF of the SUT, where we have:
+
+    $FIO = 92 failures/31 intervals = 2.97$ and $MTTF = 1/FIO = 1/2.97 = 0.337$
+    
+    It turns out, with this setup, the system immediately goes into the reject region.
+    ![RDC 1](media/rdc1.png)
+
+2. **MTTF<sub>min</min>:** In the second setup, we attempt to find the MTTF<sub>min</sub> where the system is deemed to be acceptable. We find this by brute-force approach of changing the FIO until it becomes barely acceptable. By this, we mean that the system may probably touch the reject line but will never enter the reject region. We find the MTTF<sub>min</sub> when $FIO = 670 failurs/31 intervals = 21.613$ and $MTTF = 1/21.613 = 0.046$. Similar behaviour of the RDC chart was observed when the failure rates were between 670 - 675.
+![RDC MTTFmin](media/rdc-min.png)
+
+3. **2 $\times$ MTTF<sub>min</sub>**: After finding the MTTF<sub>min</sub>, as per the requirements of this assignment, we double the value of MTTF and experiment with it. Doubling the MTTF implies that the software system or component is expected to operate reliably for a longer period before encountering a failure. We double the MTTF to $0.046 \times 2 = 0.092$, yielding $FIO = 1/0.092 = 10.87$. Normalizing this into fractions, give us 1087 failures per 100 intervals, or similarly around 337 failures in 31 intervals. We plot this on the RDC chart. In this setup, the system goes to the reject region quite fast and fluctuates between accept and reject region.
+
+![RDC min double](media/rdc-min-double.png)
+
+3. **1/2 $\times$ MTTF<sub>min</sub>**: Conversely, we also experiment with half of the minimum MTTF. Dividing the MTTF by 2 indicates that the software system or component is expected to fail more frequently compared to its previous MTTF. We take half of the minimum MTTF $0.046 \div 2 = 0.023$, yielding $FIO = 1/0.023 = 43.47$. Normalizing this into fractions, give us 4347 failures per 100 intervals, or similarly around 1347 failures in 31 intervals. We plot this on the RDC chart. In this setup, the system stays in the accept region forever as it is expected given the reduction in MTTF.
+
+![RDC min double](media/rdc-min-half.png)
 
 # Comparison of Results
 
