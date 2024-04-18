@@ -3,3 +3,4 @@
 # Guideline
 - read [assignment guideline](./Assignment5.md) 
 - commit and push output ([assignment output template](./Assignment5-ReportTemplate.md))
+- read [assignment report](./Assignment5-16.md)
